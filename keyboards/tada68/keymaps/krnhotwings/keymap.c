@@ -163,13 +163,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,----------------------------------------------------------------.
    * |   |   |   |   |   |   |   |   |   |   |   |   |   |       |    |
    * |----------------------------------------------------------------|
-   * |     |   |   |   |Rpl|   |   |   |   |   |   |   |   |     |    |
+   * |     |   |   |   |Rec|   |   |   |   |   |   |   |   |     |    |
    * |----------------------------------------------------------------|
    * |      |   |    |   |   |   |   |   |   |   |   |   |       |    |
    * |----------------------------------------------------------------|
    * |        |   |   |   |   |   |   |   |   |   |   |Shift | Up|    |
    * |----------------------------------------------------------------|
-   * |    |    |    |           F9          |Alt|   |Ctrl|Lef|Dow|Rig |
+   * |    |    |    |           F8          |Alt|   |Ctrl|Lef|Dow|Rig |
    * `----------------------------------------------------------------'
    */
 [_PTT] = LAYOUT_ansi(
@@ -177,5 +177,5 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,LCA(KC_R),XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX, XXXXXXX,XXXXXXX, \
   XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX ,XXXXXXX,XXXXXXX,        XXXXXXX,XXXXXXX, \
   XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,KC_RSFT,KC_UP, XXXXXXX, \
-  XXXXXXX,XXXXXXX,XXXXXXX,                KC_F9  ,               KC_RALT,XXXXXXX,KC_RCTRL, KC_LEFT,KC_DOWN,KC_RGHT),
+  XXXXXXX,XXXXXXX,XXXXXXX,                KC_F8  ,               KC_RALT,XXXXXXX,KC_RCTRL, KC_LEFT,KC_DOWN,KC_RGHT),
 };

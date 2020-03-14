@@ -40,7 +40,7 @@
 #endif
 
 bool either_lights_enabled(void) {
-  return 
+  return
     #if defined(BACKLIGHT_ENABLE) && defined(RGBLIGHT_ENABLE)
       is_backlight_enabled() || ((rgblight_config_t) eeconfig_read_rgblight()).enable
     #elif defined(BACKLIGHT_ENABLE)
@@ -227,13 +227,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,-----------------------------------------------------------.
    * |   |   |   |   |   |   |   |   |   |   |   |   |   |       |
    * |------------------------------------------------------------
-   * |     |   |   |   |Rpl|   |   |   |   |   |   |   |   |     |
+   * |     |   |   |   |Rec|   |   |   |   |   |   |   |   |     |
    * |------------------------------------------------------------
    * |      |   |   |   |   |   |   |   |   |   |   |   |        |
    * |------------------------------------------------------------
    * |        |   |   |   |   |   |   |   |Ctl|Alt|Sft|Up        |
    * |------------------------------------------------------------
-   * |    |    |    |         F9           |    |Left|Down |Right|
+   * |    |    |    |         F8           |    |Left|Down |Right|
    * `-----------------------------------------------------------'
    */
   [_PTT] = LAYOUT_60_ansi(
@@ -241,6 +241,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,LCA(KC_R), XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,
     XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX  , XXXXXXX , XXXXXXX , XXXXXXX ,
     XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , KC_RCTL , KC_RALT , KC_RSFT ,  KC_UP ,
-    XXXXXXX , XXXXXXX , XXXXXXX ,                     KC_F9   ,                         XXXXXXX ,     KC_LEFT ,    KC_DOWN ,    KC_RIGHT
+    XXXXXXX , XXXXXXX , XXXXXXX ,                     KC_F8   ,                         XXXXXXX ,     KC_LEFT ,    KC_DOWN ,    KC_RIGHT
   ),
 };
