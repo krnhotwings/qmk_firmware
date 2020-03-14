@@ -1,6 +1,4 @@
 #include QMK_KEYBOARD_H
-#include "led_custom.h"
-#include "keyboard.h"
 
 extern keymap_config_t keymap_config;
 
@@ -13,95 +11,132 @@ enum custom_keycodes {
   QWERTY = SAFE_RANGE,
 };
 
-#define IDLE_BREATH_TIME 600000 // 10 minutes
-#define IDLE_OFF_TIME    600000 // 10 minutes
+#if defined(BACKLIGHT_ENABLE) || defined(RGBLIGHT_ENABLE)
+  #define IDLE_BREATH_TIME 600000 // 10 minutes
+  #define IDLE_OFF_TIME    600000 // 10 minutes
 
-static bool     backlight_enabled;
-static uint8_t  recorded_backlight_level;
+  #ifdef BACKLIGHT_ENABLE
+    static bool     backlight_enabled;
+    static uint8_t  recorded_backlight_level;
+  #endif
 
-#ifdef RGBLIGHT_ENABLE
-  static bool     rgblight_enabled;
+  #ifdef RGBLIGHT_ENABLE
+    static bool     rgblight_enabled;
+  #endif
+
+  static uint32_t idle_timer;
+  static bool     is_idle_breathing;
+  static bool     is_idle_off;
 #endif
 
-static uint32_t idle_timer;
-static bool     is_idle_breathing;
-static bool     is_idle_off;
-
-void matrix_init_board(void) {
-  // If keyboard has been shut off during breathing state, turn breathing
-  // off
-  if (kb_backlight_config.breathing) {
-    breathing_disable();
-  }
-
-  is_idle_breathing = false;
-  is_idle_off       = false;
-  idle_timer        = timer_read32();
-}
-
-void matrix_scan_user(void) {
-  if (
-      kb_backlight_config.enable &&
-      !is_idle_breathing &&
-      timer_elapsed32(idle_timer) > IDLE_BREATH_TIME) {
-    // Store backlight state as we enter is_idle_breathing state
-    backlight_enabled = kb_backlight_config.enable;
-    recorded_backlight_level = kb_backlight_config.level;
-    breathing_enable();
-
-    #ifdef RGBLIGHT_ENABLE
-      rgblight_enabled = ((rgblight_config_t) eeconfig_read_rgblight()).enable;
-
-      if (rgblight_enabled) {
-        rgblight_disable_noeeprom();
-      }
+bool either_lights_enabled(void) {
+  return
+    #if defined(BACKLIGHT_ENABLE) && defined(RGBLIGHT_ENABLE)
+      is_backlight_enabled() || ((rgblight_config_t) eeconfig_read_rgblight()).enable
+    #elif defined(BACKLIGHT_ENABLE)
+      is_backlight_enabled()
+    #elif defined(RGBLIGHT_ENABLE)
+      ((rgblight_config_t) eeconfig_read_rgblight()).enable
     #endif
-
-    is_idle_breathing = true;
-
-    // Set new reference point for idle-off timer
-    idle_timer = timer_read32();
-  } else if (
-      is_idle_breathing &&
-      !is_idle_off &&
-      timer_elapsed32(idle_timer) > IDLE_OFF_TIME) {
-    breathing_disable();
-    backlight_set(0);
-
-    is_idle_off = true;
-  }
+  ;
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  // No need to check is_idle_off here since is_idle_off is an extended state
-  // on top of is_idle_breathing
-  if (is_idle_breathing) {
-    if (backlight_enabled && !is_idle_off) {
-      // We're in is_idle_breathing state. All we need to do is turn off
-      // breathing
-      breathing_disable();
-    } else if (backlight_enabled && is_idle_off) {
-      // We're in is_idle_off state. Breathing is already off, so we just
-      // need to set the backlight back to what it was before entering
-      // is_idle_breathing state
-      backlight_set(recorded_backlight_level);
-    }
-
-    #ifdef RGBLIGHT_ENABLE
-      if (rgblight_enabled) {
-        rgblight_enable_noeeprom();
+void matrix_init_user(void) {
+  #if defined(BACKLIGHT_ENABLE) || defined(RGBLIGHT_ENABLE)
+    #ifdef BACKLIGHT_ENABLE
+      // If keyboard has been shut off during breathing state, turn breathing
+      // off
+      if (is_backlight_breathing()) {
+        backlight_disable_breathing();
       }
     #endif
 
     is_idle_breathing = false;
+    is_idle_off       = false;
+    idle_timer        = timer_read32();
+  #endif
+}
 
-    if (is_idle_off) {
-      // Only write this variable if we're in the is_idle_off state
-      is_idle_off = false;
+void matrix_scan_user(void) {
+  #if defined(BACKLIGHT_ENABLE) || defined(RGBLIGHT_ENABLE)
+    if (
+        either_lights_enabled() &&
+        !is_idle_breathing &&
+        timer_elapsed32(idle_timer) > IDLE_BREATH_TIME) {
+      #ifdef BACKLIGHT_ENABLE
+        if (is_backlight_enabled()) {
+          // Store backlight state as we enter is_idle_breathing state
+          backlight_enabled = is_backlight_enabled();
+          recorded_backlight_level = get_backlight_level();
+          backlight_enable_breathing();
+        }
+      #endif
+
+      #ifdef RGBLIGHT_ENABLE
+        rgblight_enabled = ((rgblight_config_t) eeconfig_read_rgblight()).enable;
+
+        if (rgblight_enabled) {
+          rgblight_disable_noeeprom();
+        }
+      #endif
+
+      is_idle_breathing = true;
+
+      // Set new reference point for idle-off timer
+      idle_timer = timer_read32();
+    } else if (
+        is_idle_breathing &&
+        !is_idle_off &&
+        timer_elapsed32(idle_timer) > IDLE_OFF_TIME) {
+      #ifdef BACKLIGHT_ENABLE
+        if (backlight_enabled) {
+          backlight_disable_breathing();
+          backlight_level_noeeprom(0);
+        }
+      #endif
+
+      is_idle_off = true;
     }
-  }
+  #endif
+}
 
-  idle_timer = timer_read32();
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  #if defined(BACKLIGHT_ENABLE) || defined(RGBLIGHT_ENABLE)
+    // No need to check is_idle_off here since is_idle_off is an extended state
+    // on top of is_idle_breathing
+    if (is_idle_breathing) {
+      #ifdef BACKLIGHT_ENABLE
+        if (backlight_enabled && !is_idle_off) {
+          // We're in is_idle_breathing state. All we need to do is turn off
+          // breathing
+          backlight_disable_breathing();
+        } else if (backlight_enabled && is_idle_off) {
+          // We're in is_idle_off state. Breathing is already off, so we just
+          // need to set the backlight back to what it was before entering
+          // is_idle_breathing state
+          backlight_level_noeeprom(recorded_backlight_level);
+        }
+      #endif
+
+      #ifdef RGBLIGHT_ENABLE
+        if (rgblight_enabled) {
+          rgblight_enable_noeeprom();
+        }
+      #endif
+
+      is_idle_breathing = false;
+
+      if (is_idle_off) {
+        // Only write this variable if we're in the is_idle_off state
+        is_idle_off = false;
+      }
+    }
+
+    // Only write if either backlight or RGB underglow is currently enabled
+    if (either_lights_enabled()) {
+      idle_timer = timer_read32();
+    }
+  #endif
 
   return true;
 }
