@@ -1,17 +1,9 @@
 #include QMK_KEYBOARD_H
-#include "led_custom.h"
-#include "keyboard.h"
-
-extern keymap_config_t keymap_config;
 
 #define _BL  0
 #define _FL  1
 #define _CL  2
 #define _PTT 3
-
-enum custom_keycodes {
-  QWERTY = SAFE_RANGE,
-};
 
 #define IDLE_BREATH_TIME 600000 // 10 minutes
 #define IDLE_OFF_TIME    600000 // 10 minutes
@@ -30,7 +22,7 @@ static bool     is_idle_off;
 void matrix_init_board(void) {
   // If keyboard has been shut off during breathing state, turn breathing
   // off
-  if (kb_backlight_config.breathing) {
+  if (is_backlight_breathing()) {
     breathing_disable();
   }
 
@@ -41,12 +33,12 @@ void matrix_init_board(void) {
 
 void matrix_scan_user(void) {
   if (
-      kb_backlight_config.enable &&
+      is_backlight_breathing() &&
       !is_idle_breathing &&
       timer_elapsed32(idle_timer) > IDLE_BREATH_TIME) {
     // Store backlight state as we enter is_idle_breathing state
-    backlight_enabled = kb_backlight_config.enable;
-    recorded_backlight_level = kb_backlight_config.level;
+    backlight_enabled = is_backlight_breathing();
+    recorded_backlight_level = get_backlight_level();
     breathing_enable();
 
     #ifdef RGBLIGHT_ENABLE
@@ -188,7 +180,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------------------------------------------------------------
    * |        |   |   |   |   |   |   |   |Ctl|Alt|Sft|Up        |
    * |------------------------------------------------------------
-   * |    |    |    |         F8           |    |Left|Down |Right|
+   * |    |    |    |         F13          |    |Left|Down |Right|
    * `-----------------------------------------------------------'
    */
   [_PTT] = LAYOUT_60_ansi(
@@ -196,6 +188,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,LCA(KC_R), XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,
     XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,
     XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , KC_RCTL , KC_RALT , KC_RSFT ,  KC_UP ,
-    XXXXXXX , XXXXXXX , XXXXXXX ,                     KC_F8   ,                         XXXXXXX ,     KC_LEFT ,    KC_DOWN ,    KC_RIGHT
+    XXXXXXX , XXXXXXX , XXXXXXX ,                     KC_F13  ,                         XXXXXXX ,     KC_LEFT ,    KC_DOWN ,    KC_RIGHT
   ),
 };
