@@ -1,9 +1,0 @@
-#pragma once
-
-#ifdef BACKLIGHT_LEVELS
-  #undef BACKLIGHT_LEVELS
-#endif
-
-#define BACKLIGHT_LEVELS 15
-#define BACKLIGHT_BREATHING
-#define BREATHING_PERIOD 6
