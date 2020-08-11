@@ -174,9 +174,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,-----------------------------------------------------------.
    * |   |   |   |   |   |   |   |   |   |   |   |   |   |       |
    * |------------------------------------------------------------
-   * |     |   |   |   |Rec|   |   |   |   |   |   |   |   |     |
+   * |    |   |   |   |Rply|   |   |   |   |Ovrly|   |   |   |   |
    * |------------------------------------------------------------
-   * |      |   |   |   |   |   |   |   |   |   |   |   |        |
+   * |      |   |Rec|   |   |   |   |   |   |   |   |   |        |
    * |------------------------------------------------------------
    * |        |   |   |   |   |   |   |   |Ctl|Alt|Sft|Up        |
    * |------------------------------------------------------------
@@ -185,8 +185,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_PTT] = LAYOUT_60_ansi(
     TG(_PTT), XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,
-    XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,LCA(KC_R), XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,
-    XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,
+    XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,LCA(KC_R), XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,LCA(KC_O), XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,
+    XXXXXXX , XXXXXXX ,LCA(KC_S), XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX ,
     XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , XXXXXXX , KC_RCTL , KC_RALT , KC_RSFT ,  KC_UP ,
     XXXXXXX , XXXXXXX , XXXXXXX ,                     KC_F13  ,                         XXXXXXX ,     KC_LEFT ,    KC_DOWN ,    KC_RIGHT
   ),
