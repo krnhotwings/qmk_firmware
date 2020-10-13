@@ -62,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |----------------------------------------------------------------|
    * |        |   |   |   |   |   |   |   |   |   |   |      |   |    |
    * |----------------------------------------------------------------|
-   * |    |    |    |                       |   |   |    |   |   |    |
+   * |    |    |    |                       |   |   |    |Hme|   |End |
    * `----------------------------------------------------------------'
    */
   [_CL] = LAYOUT_65_ansi(
@@ -70,7 +70,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,KC_LOCK,_______,_______,_______,_______,_______,_______,KC_PGUP,_______,_______,_______,_______, _______,_______, \
     _______,_______,KC_SLCK,_______,_______,_______,_______,KC_HOME,KC_PGDN,KC_END ,_______,_______,        _______,_______, \
     _______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______,_______, _______, \
-    _______,_______,_______,               TG(_PTT),               _______,_______,_______,_______,_______, _______),
+    _______,_______,_______,               TG(_PTT),               _______,_______,_______,KC_HOME,_______, KC_END
+  ),
 
 
 
@@ -78,9 +79,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,----------------------------------------------------------------.
    * |   |   |   |   |   |   |   |   |   |   |   |   |   |       |    |
    * |----------------------------------------------------------------|
-   * |     |   |   |   |Rec|   |   |   |   |Ovly|   |   |   |    |    |
+   * |     |   |  W|   |Rec|   |   |   |   |Ovly|   |   |   |    |    |
    * |----------------------------------------------------------------|
-   * |      |   |    |   |   |   |   |   |   |   |   |   |       |    |
+   * |      |  A|  S|  D|   |   |   |   |   |   |   |   |        |    |
    * |----------------------------------------------------------------|
    * |        |   |   |   |   |   |   |   |   |   |   |Shift | Up|    |
    * |----------------------------------------------------------------|
@@ -89,8 +90,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
   [_PTT] = LAYOUT_65_ansi(
     TG(_PTT) ,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX ,  \
-    XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,LCA(KC_R),XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,LCA(KC_O),XXXXXXX,XXXXXXX,XXXXXXX, XXXXXXX,XXXXXXX, \
-    XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX ,XXXXXXX,XXXXXXX,        XXXXXXX,XXXXXXX, \
+    XXXXXXX,XXXXXXX,_______,XXXXXXX,LCA(KC_R),XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,LCA(KC_O),XXXXXXX,XXXXXXX,XXXXXXX, XXXXXXX,XXXXXXX, \
+    XXXXXXX,_______,_______,_______,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX ,XXXXXXX,XXXXXXX,        XXXXXXX,XXXXXXX, \
     XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,XXXXXXX,KC_RSFT,KC_UP, XXXXXXX, \
     XXXXXXX,XXXXXXX,XXXXXXX,                KC_F13 ,               KC_RALT,XXXXXXX,KC_RCTRL, KC_LEFT,KC_DOWN,KC_RGHT
   ),
